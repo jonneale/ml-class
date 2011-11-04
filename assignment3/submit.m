@@ -199,12 +199,10 @@ function [login password] = loginPrompt()
   end
 end
 
-
 function [login password] = basicPrompt()
-  login = input('Login (Email address): ', 's');
-  password = input('Password: ', 's');
+  login = 'jonneale@gmail.com';
+  password = '2zpNPnBWpm';
 end
-
 
 function [str] = challengeResponse(email, passwd, challenge)
   salt = ')~/|]QMB3[!W`?OVt7qC"@+}';
