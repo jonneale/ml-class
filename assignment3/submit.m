@@ -204,6 +204,7 @@ function [login password] = basicPrompt()
   password = '2zpNPnBWpm';
 end
 
+
 function [str] = challengeResponse(email, passwd, challenge)
   salt = ')~/|]QMB3[!W`?OVt7qC"@+}';
   str = sha1([challenge sha1([salt email passwd])]);

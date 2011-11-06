@@ -44,14 +44,14 @@ X = [ones(m, 1) X];
 % 
 %     % Run fmincg to obtain the optimal theta
 %     % This function will return theta and the cost 
-for c = 1
-    (lrCostFunction(initial_theta, X, (y == c), lambda))
-    fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), initial_theta, options);
-    % [theta] = ...
-    %     fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), ...
-    %             initial_theta, options);
-end
+%     [theta] = ...
+%         fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), ...
+%                 initial_theta, options);
 %
+
+for c = 1:num_labels
+    [all_theta(c,:)] = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), initial_theta, options);
+end
 
 
 
