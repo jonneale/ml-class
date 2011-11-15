@@ -23,12 +23,44 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
                  num_labels, (hidden_layer_size + 1));
 
 % Setup some useful variables
+
 m = size(X, 1);
-         
-% You need to return the following variables correctly 
-J = 0;
+num_labels = size(Theta2, 1);
+X = [ones(m, 1) X];
+a1 = sigmoid(Theta1 * X');
+a1 = [ones(m, 1) a1']';
+a2 = sigmoid(Theta2 * a1);
+h0 = a2;
+Y = zeros(size(a2));
+for index = 1:m
+  Y(y(index), index) = 1;
+end
+unreg_J = 1/m*sum(sum(-Y.*log(h0) - (1 - Y).*log(1-h0)));
+
+J = unreg_J + (sum(sum(Theta1(:,2:end).^2))+sum(sum(Theta2(:,2:end).^2))) * lambda/(2*m);
+% J = unreg_J;
+
+Y = zeros(m, num_labels);
+for index = 1:size(X, 1)
+  Y(index, y(index)) = 1;
+end
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
+
+for t = 1:m
+  x = X(t,:);
+  z2 = Theta1 * x';
+  a2 = [1; sigmoid(z2)];
+  z3 = Theta2 * a2;
+  a3 = sigmoid(z3);
+  d3 = a3 - Y(t,:)';
+  d2 = Theta2' * d3 .* sigmoidGradient([1; z2]);
+  Theta1_grad = Theta1_grad + d2(2:end)*x;
+  Theta2_grad = Theta2_grad + (d3*a2');
+end
+
+Theta1_grad = Theta1_grad/m + [zeros(size(Theta1_grad,1),1)'; ((Theta1(:,2:end))*(lambda/m))']';
+Theta2_grad = Theta2_grad/m + [zeros(size(Theta2_grad,1),1)'; ((Theta2(:,2:end))*(lambda/m))']';
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the

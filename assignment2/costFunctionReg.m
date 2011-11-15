@@ -8,6 +8,13 @@ function [J, grad] = costFunctionReg(theta, X, y, lambda)
 m = length(y); % number of training examples
 
 % You need to return the following variables correctly 
+h0 = (sigmoid(X*theta));
+first = log(h0);
+second = 1-log(h0);
+J = (1/m)*sum((-y.*first)-((1-y).*second)) + lambda/(2*m)*sum(theta(2:end).^2);
+grad = ((1/m) * ((h0-y)' * X)' + vertcat(0,lambda*theta(2:end)))';
+
+
 ths = sum(theta(:,2:size(theta)(2)).^2);
 J = (1/m)*sum((-y.*log(sigmoid(X*theta)))-((1-y).*log(1-sigmoid(X*theta)))) + lambda/(2*m)*sum(theta(2:end).^2);
 errors = sigmoid(X*theta)-y;
